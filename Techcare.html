@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<!-- ✅ IMPORTANT FOR MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TechCare</title>
+
+<style>
+* { box-sizing:border-box; }
+
+body {
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#1e1e2f,#2c2c54);
+    color:white;
+    font-size:16px;
+}
+
+/* HEADER */
+header {
+    text-align:center;
+    padding:18px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* PAGES */
+.page { display:none; padding:15px; }
+.active { display:block; }
+
+/* CARD */
+.card {
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    padding:20px;
+    margin:15px 0;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* INPUTS */
+input, select {
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+}
+
+/* BUTTON */
+button {
+    width:100%;
+    padding:16px;
+    margin-top:14px;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    border:none;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover {
+    transform:scale(1.05);
+}
+
+/* HOME BIG BUTTONS */
+#home button {
+    padding:18px;
+    font-size:18px;
+}
+
+/* NAVBAR */
+.navbar {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#111;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    border-top:1px solid #333;
+}
+
+.navbar div {
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* CHAT */
+.chatbox {
+    height:250px;
+    overflow:auto;
+    background:#000;
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+
+.msg-user {
+    text-align:right;
+    margin:5px;
+    color:#00ffcc;
+}
+
+.msg-bot {
+    text-align:left;
+    margin:5px;
+}
+
+/* MAP */
+.map {
+    height:150px;
+    background:linear-gradient(45deg,#555,#222);
+    border-radius:10px;
+    text-align:center;
+    padding-top:60px;
+}
+
+/* MOBILE BOOST */
+@media (max-width:600px) {
+    body { font-size:17px; }
+
+    button {
+        padding:17px;
+        font-size:17px;
+    }
+
+    input, select {
+        padding:16px;
+        font-size:17px;
+    }
+
+    header {
+        font-size:26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>🚀 TechCare</header>
+
+<!-- HOME -->
+<div id="home" class="page active">
+    <div class="card">
+        <h3>Welcome 👋</h3>
+        <button onclick="start()">Book Service</button>
+        <button onclick="start()">Pickup & Drop</button>
+    </div>
+</div>
+
+<!-- LOGIN -->
+<div id="auth" class="page">
+    <div class="card">
+        <h3>Login</h3>
+        <input id="loginUser" placeholder="Username">
+        <input id="loginPass" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p onclick="showPage('register')" style="color:#00c6ff;">Register</p>
+    </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register" class="page">
+    <div class="card">
+        <h3>Register</h3>
+        <input id="regUser" placeholder="Username">
+        <input id="regPass" type="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+</div>
+
+<!-- BOOK -->
+<div id="booking" class="page">
+    <div class="card">
+        <h3>Book Service</h3>
+
+        <input id="location" placeholder="Enter Location">
+
+        <select id="device">
+            <option>Phone</option>
+            <option>Laptop</option>
+        </select>
+
+        <select id="issue">
+            <option>Screen Damage</option>
+            <option>Battery Issue</option>
+        </select>
+
+        <button onclick="confirmBooking()">Confirm</button>
+    </div>
+</div>
+
+<!-- TRACKING -->
+<div id="tracking" class="page">
+    <div class="card">
+        <h3>Tracking</h3>
+        <div class="map">📍 Live Tracking</div>
+        <p id="status">Waiting...</p>
+    </div>
+</div>
+
+<!-- OFFERS -->
+<div id="offers" class="page">
+    <div class="card">
+        <h3>Offers</h3>
+        <p>🔥 20% OFF</p>
+        <p>🎓 Student Discount</p>
+    </div>
+</div>
+
+<!-- PROFILE -->
+<div id="me" class="page">
+    <div class="card">
+        <h3>Profile</h3>
+        <input id="name" placeholder="Name">
+        <input id="age" placeholder="Age">
+        <input id="address" placeholder="Address">
+        <button onclick="saveProfile()">Save</button>
+        <p id="saved"></p>
+    </div>
+</div>
+
+<!-- MENU -->
+<div id="menu" class="page">
+    <div class="card">
+        <h3>Orders</h3>
+        <p id="orderStatus">No orders yet</p>
+    </div>
+</div>
+
+<!-- CUSTOMER CARE -->
+<div id="care" class="page">
+    <div class="card">
+        <h3>Customer Care 🤖</h3>
+
+        <div id="chat" class="chatbox"></div>
+
+        <input id="msg" placeholder="Ask something...">
+        <button onclick="sendMsg()">Send</button>
+    </div>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div onclick="showPage('offers')">🏷️offers</div>
+    <div onclick="showPage('me')">👤</div>
+    <div onclick="showPage('tracking')">tracking📍</div>
+    <div onclick="showPage('menu')">menu📦</div>
+    <div onclick="showPage('care')">chatbot💬</div>
+</div>
+
+<script>
+let user="", pass="", currentOrder="";
+
+/* NAV */
+function showPage(p){
+    document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+    document.getElementById(p).classList.add("active");
+}
+
+/* START */
+function start(){ showPage('auth'); }
+
+/* REGISTER */
+function register(){
+    user = regUser.value;
+    pass = regPass.value;
+    alert("Registered!");
+    showPage('auth');
+}
+
+/* LOGIN */
+function login(){
+    if(loginUser.value===user && loginPass.value===pass){
+        showPage('booking');
+    } else alert("Wrong login");
+}
+
+/* BOOK */
+function confirmBooking(){
+    let loc = location.value;
+    if(loc===""){ alert("Enter location"); return; }
+
+    currentOrder = "Service booked at " + loc;
+    orderStatus.innerText = currentOrder;
+
+    showPage('tracking');
+
+    let steps=["Assigned","On the way","Repairing","Done"];
+    let i=0;
+
+    let interval=setInterval(()=>{
+        status.innerText=steps[i];
+        i++;
+        if(i>=steps.length) clearInterval(interval);
+    },2000);
+}
+
+/* PROFILE */
+function saveProfile(){
+    saved.innerText="Saved!";
+}
+
+/* CHATBOT */
+function sendMsg(){
+    let m = msg.value.toLowerCase();
+    let chat = document.getElementById("chat");
+
+    chat.innerHTML += `<div class="msg-user">You: ${m}</div>`;
+
+    let reply = "Please contact support for more help.";
+
+    if(m.includes("hi") || m.includes("hello") || m.includes("hey")){
+        reply = "Hey welcome to tech care customer support 🤗";
+    }
+
+    else if(m.includes("price") || m.includes("pricing")){
+        reply = `Pricing may vary depending on the device and its conditions.
+
+Here is our standard pricing:
+
+📱 Phone:
+Screen damage: ₹1,000 – ₹2,500  
+Display damage: ₹500 – ₹800  
+Cleaning/Diagnostic: ₹150 – ₹1,000  
+IC Chip Replacement: ₹1,500 – ₹2,000  
+Screen Replacement: ₹3,500 – ₹7,000+  
+
+💻 Laptop:
+Screen damage:
+• Basic/HD Screen: ₹1,900 – ₹3,500  
+• Full HD Screen: ₹3,500 – ₹6,000  
+
+Cleaning & Diagnostic: ₹300 – ₹500  
+Motherboard Repair: ₹2,000 – ₹5,000+  
+Keyboard/Trackpad: ₹1,000 – ₹3,000  
+Full Motherboard: ₹10,000 – ₹30,000+`;
+    }
+
+    else if(m.includes("delay")){
+        reply = "We apologize for the delay. Our technician will reach you soon.";
+    }
+
+    else if(m.includes("track")){
+        reply = "You can check the status in the Tracking section.";
+    }
+
+    chat.innerHTML += `<div class="msg-bot">Bot: ${reply.replace(/\n/g,"<br>")}</div>`;
+    msg.value="";
+    chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
